@@ -2,20 +2,20 @@ package me.dio.dto;
 
 import me.dio.domain.model.User;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserDTO {
 
     private Long id;
     private String name;
-    private Date birthDate;
+    private LocalDate birthDate;
     private int height;
     private int weight;
     private String goal;
 
     public UserDTO(User entity) {}
 
-    public UserDTO(Long id, String name, Date birthDate, int height, int weight, String goal) {
+    public UserDTO(Long id, String name, LocalDate birthDate, int height, int weight, String goal) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
@@ -40,11 +40,11 @@ public class UserDTO {
         this.name = name;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 

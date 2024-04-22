@@ -1,6 +1,6 @@
 package me.dio.domain.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,14 +16,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Date birthDate;
+    private LocalDate birthDate;
     private Integer height;
     private Integer weight;
     private String goal;
 
     public User() {}
 
-    public User(Long id, String name, Date birthDate, Integer height, Integer weight, String goal) {
+    public User(Long id, String name, LocalDate birthDate, Integer height, Integer weight, String goal) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
@@ -48,11 +48,11 @@ public class User {
         this.name = name;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 

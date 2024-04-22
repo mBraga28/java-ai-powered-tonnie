@@ -1,1 +1,1 @@
-web: java -jar target/java-ai-powered-tonnie-0.0.1-SNAPSHOT.jar
+web: java -jar java-ai-powered-tonnie/target/java-ai-powered-tonnie-0.0.1-SNAPSHOT.jar

@@ -12,9 +12,9 @@ public interface AppointmentService {
 
     List<AppointmentDTO> getAppointmentsByUser(Long userId);
 
-    void saveAppointment(AppointmentDTO appointment);
+    AppointmentDTO createAppointment(AppointmentDTO appointment);
 
-    void updateAppointment(AppointmentDTO appointment);
+    AppointmentDTO updateAppointment(AppointmentDTO appointment);
 
     void deleteAppointment(Long id);
 }

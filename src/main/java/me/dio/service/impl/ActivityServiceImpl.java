@@ -53,20 +53,26 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     @Transactional
-    public void saveActivity(ActivityDTO activityDTO) {
-        Activity activity = new Activity();
-        copyDtoToEntity(activityDTO, activity);
-        activityRepository.save(activity);
+    public ActivityDTO createActivity(ActivityDTO dto) {
+
+        if (dto.getId() != null && activityRepository.existsById(dto.getId())) {
+            throw new IllegalArgumentException("This Activity ID already exists!");
+        }
+        Activity entity = new Activity();
+        copyDtoToEntity(dto, entity);
+        entity = activityRepository.save(entity);
+        return new ActivityDTO(entity);
     }
 
     @Override
     @Transactional
-    public void updateActivity(ActivityDTO activityDTO) {
-        Optional<Activity> optionalActivity = activityRepository.findById(activityDTO.getId());
+    public ActivityDTO updateActivity(ActivityDTO dto) {
+        Optional<Activity> optionalActivity = activityRepository.findById(dto.getId());
         if (optionalActivity.isPresent()) {
             Activity activity = optionalActivity.get();
-            copyDtoToEntity(activityDTO, activity);
-            activityRepository.save(activity);
+            copyDtoToEntity(dto, activity);
+            activity = activityRepository.save(activity);
+            return new ActivityDTO(activity);
         } else {
             throw new NoSuchElementException("Activity not found");
         }
@@ -78,12 +84,12 @@ public class ActivityServiceImpl implements ActivityService {
         activityRepository.deleteById(id);
     }
 
-    private void copyDtoToEntity(ActivityDTO activityDTO, Activity entity) {
-        entity.setUser(new User(activityDTO.getId(), null, null, null, null, null));
-        entity.setType(activityDTO.getType());
-        entity.setDistance(activityDTO.getDistance());
-        entity.setTime(activityDTO.getTime());
-        entity.setBurnedCalories(activityDTO.getBurnedCalories());
+    private void copyDtoToEntity(ActivityDTO dto, Activity entity) {
+        entity.setUser(new User(dto.getId(), null, null, null, null, null));
+        entity.setType(dto.getType());
+        entity.setDistance(dto.getDistance());
+        entity.setTime(dto.getTime());
+        entity.setBurnedCalories(dto.getBurnedCalories());
     }
 }
 

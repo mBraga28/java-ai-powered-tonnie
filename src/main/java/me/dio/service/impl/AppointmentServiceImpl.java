@@ -51,20 +51,25 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public void saveAppointment(AppointmentDTO dto) {
+    public AppointmentDTO createAppointment(AppointmentDTO dto) {
+        if (dto.getId() != null && appointmentRepository.existsById(dto.getId())) {
+            throw new IllegalArgumentException("This Appointment ID already exists!");
+        }
         Appointment entity = new Appointment();
         copyDtoToEntity(dto, entity);
-        appointmentRepository.save(entity);
+        entity = appointmentRepository.save(entity);
+        return new AppointmentDTO(entity);
     }
 
     @Override
     @Transactional
-    public void updateAppointment(AppointmentDTO appointmentDTO) {
-        Optional<Appointment> optionalAppointment = appointmentRepository.findById(appointmentDTO.getId());
+    public AppointmentDTO updateAppointment(AppointmentDTO dto) {
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(dto.getId());
         if (optionalAppointment.isPresent()) {
-            Appointment appointment = optionalAppointment.get();
-            copyDtoToEntity(appointmentDTO, appointment);
-            appointmentRepository.save(appointment);
+            Appointment entity = optionalAppointment.get();
+            copyDtoToEntity(dto, entity);
+            entity = appointmentRepository.save(entity);
+            return new AppointmentDTO(entity);
         } else {
             throw new NoSuchElementException("Appointment not found");
         }
@@ -77,12 +82,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
-    private void copyDtoToEntity(AppointmentDTO appointmentDTO, Appointment entity) {
-        entity.setUser(new User(appointmentDTO.getId(), null, null, null, null, null));
-        entity.setDoctor(appointmentDTO.getDoctor());
-        entity.setDate(appointmentDTO.getDate());
-        entity.setTime(appointmentDTO.getTime());
-        entity.setStatus(appointmentDTO.getStatus());
+    private void copyDtoToEntity(AppointmentDTO dto, Appointment entity) {
+        entity.setUser(new User(dto.getId(), null, null, null, null, null));
+        entity.setDoctor(dto.getDoctor());
+        entity.setDate(dto.getDate());
+        entity.setTime(dto.getTime());
+        entity.setStatus(dto.getStatus());
 
     }
 

@@ -15,9 +15,9 @@ public interface ReminderService {
 
     List<ReminderDTO> getRemindersByUser(Long userId);
 
-    void saveReminder(ReminderDTO reminder);
+    ReminderDTO createReminder(ReminderDTO reminder);
 
-    void updateReminder(ReminderDTO reminder);
+    ReminderDTO updateReminder(ReminderDTO reminder);
 
     void deleteReminder(Long id);
 }

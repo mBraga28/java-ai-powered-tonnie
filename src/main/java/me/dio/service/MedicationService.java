@@ -12,9 +12,9 @@ public interface MedicationService {
 
     List<MedicationDTO> getMedicationsByUser(Long userId);
 
-    void saveMedication(MedicationDTO medication);
+    MedicationDTO createMedication(MedicationDTO medication);
 
-    void updateMedication(MedicationDTO medication);
+    MedicationDTO updateMedication(MedicationDTO medication);
 
     void deleteMedication(Long id);
 }

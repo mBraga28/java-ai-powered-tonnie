@@ -56,20 +56,26 @@ public class ReminderServiceImpl implements ReminderService {
 
     @Override
     @Transactional
-    public void saveReminder(ReminderDTO reminderDTO) {
-        Reminder reminder = new Reminder();
-        copyDtoToEntity(reminderDTO, reminder);
-        reminderRepository.save(reminder);
+    public ReminderDTO createReminder(ReminderDTO dto) {
+
+        if (dto.getId() != null && reminderRepository.existsById(dto.getId())) {
+            throw new IllegalArgumentException("This Reminder ID already exists!");
+        }
+        Reminder entity = new Reminder();
+        copyDtoToEntity(dto, entity);
+        entity = reminderRepository.save(entity);
+        return new ReminderDTO(entity);
     }
 
     @Override
     @Transactional
-    public void updateReminder(ReminderDTO reminderDTO) {
-        Optional<Reminder> optionalReminder = reminderRepository.findById(reminderDTO.getId());
+    public ReminderDTO updateReminder(ReminderDTO dto) {
+        Optional<Reminder> optionalReminder = reminderRepository.findById(dto.getId());
         if (optionalReminder.isPresent()) {
-            Reminder reminder = optionalReminder.get();
-            copyDtoToEntity(reminderDTO, reminder);
-            reminderRepository.save(reminder);
+            Reminder entity = optionalReminder.get();
+            copyDtoToEntity(dto, entity);
+            entity = reminderRepository.save(entity);
+            return new ReminderDTO(entity);
         } else {
             throw new NoSuchElementException("Reminder not found");
         }
@@ -81,11 +87,11 @@ public class ReminderServiceImpl implements ReminderService {
         reminderRepository.deleteById(id);
     }
 
-    private void copyDtoToEntity(ReminderDTO reminderDTO, Reminder reminder) {
-        reminder.setUser(new User(reminderDTO.getId(), null, null, null, null, null));
-        reminder.setType(reminderDTO.getType());
-        reminder.setDescription(reminderDTO.getDescription());
-        reminder.setTime(reminderDTO.getTime());
+    private void copyDtoToEntity(ReminderDTO dto, Reminder entity) {
+        entity.setUser(new User(dto.getId(), null, null, null, null, null));
+        entity.setType(dto.getType());
+        entity.setDescription(dto.getDescription());
+        entity.setTime(dto.getTime());
     }
 }
 

@@ -11,9 +11,9 @@ public interface DietService {
 
     List<DietDTO> getDietsByUser(Long userId);
 
-    void saveDiet(DietDTO diet);
+    DietDTO createDiet(DietDTO diet);
 
-    void updateDiet(DietDTO diet);
+    DietDTO updateDiet(DietDTO diet);
 
     void deleteDiet(Long id);
 }

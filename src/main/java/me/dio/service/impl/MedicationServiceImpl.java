@@ -55,20 +55,25 @@ public class MedicationServiceImpl implements MedicationService {
 
     @Override
     @Transactional
-    public void saveMedication(MedicationDTO medicationDTO) {
+    public MedicationDTO createMedication(MedicationDTO dto) {
+        if (dto.getId() != null && medicationRepository.existsById(dto.getId())) {
+            throw new IllegalArgumentException("This Medication ID already exists!");
+        }
         Medication entity = new Medication();
-        copyDtoToEntity(medicationDTO, entity);
-        medicationRepository.save(entity);
+        copyDtoToEntity(dto, entity);
+        entity = medicationRepository.save(entity);
+        return new MedicationDTO(entity);
     }
 
     @Override
     @Transactional
-    public void updateMedication(MedicationDTO medicationDTO) {
-        Optional<Medication> optionalDiet = medicationRepository.findById(medicationDTO.getId());
+    public MedicationDTO updateMedication(MedicationDTO dto) {
+        Optional<Medication> optionalDiet = medicationRepository.findById(dto.getId());
         if (optionalDiet.isPresent()) {
-            Medication medication = optionalDiet.get();
-            copyDtoToEntity(medicationDTO, medication);
-            medicationRepository.save(medication);
+            Medication entity = optionalDiet.get();
+            copyDtoToEntity(dto, entity);
+            entity = medicationRepository.save(entity);
+            return new MedicationDTO(entity);
         } else {
             throw new NoSuchElementException("Medication not found");
         }
@@ -80,12 +85,12 @@ public class MedicationServiceImpl implements MedicationService {
         medicationRepository.deleteById(id);
     }
 
-    private void copyDtoToEntity(MedicationDTO medicationDTO, Medication medication) {
-        medication.setUser(new User(medicationDTO.getId(), null, null, null, null, null));
-        medication.setName(medicationDTO.getName());
-        medication.setDosage(medicationDTO.getDosage());
-        medication.setSchedule(medicationDTO.getSchedule());
-        medication.setStatus(medicationDTO.getStatus());
+    private void copyDtoToEntity(MedicationDTO dto, Medication entity) {
+        entity.setUser(new User(dto.getId(), null, null, null, null, null));
+        entity.setName(dto.getName());
+        entity.setDosage(dto.getDosage());
+        entity.setSchedule(dto.getSchedule());
+        entity.setStatus(dto.getStatus());
     }
 
 }

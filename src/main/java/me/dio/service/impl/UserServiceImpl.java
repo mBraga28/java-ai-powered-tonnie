@@ -29,22 +29,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTO create(UserDTO userToCreate) {
-        if (userToCreate.getId() != null && userRepository.existsById(userToCreate.getId())) {
+    public UserDTO create(UserDTO dto) {
+        if (dto.getId() != null && userRepository.existsById(dto.getId())) {
             throw new IllegalArgumentException("This User ID already exists!");
         }
 
         User entity = new User();
-        copyDtoToEntity(userToCreate, entity);
+        copyDtoToEntity(dto, entity);
         entity = userRepository.save(entity);
         return new UserDTO(entity);
     }
 
-    private void copyDtoToEntity(UserDTO userToCreate, User entity) {
-        entity.setName(userToCreate.getName());
-        entity.setBirthDate(userToCreate.getBirthDate());
-        entity.setHeight(userToCreate.getHeight());
-        entity.setWeight(userToCreate.getWeight());
-        entity.setGoal(userToCreate.getGoal());
+    private void copyDtoToEntity(UserDTO dto, User entity) {
+        entity.setName(dto.getName());
+        entity.setBirthDate(dto.getBirthDate());
+        entity.setHeight(dto.getHeight());
+        entity.setWeight(dto.getWeight());
+        entity.setGoal(dto.getGoal());
     }
 }

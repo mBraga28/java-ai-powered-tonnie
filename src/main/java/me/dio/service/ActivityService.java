@@ -9,7 +9,7 @@ public interface ActivityService {
     ActivityDTO getActivityById(Long id);
     List<ActivityDTO> getAllActivities();
     List<ActivityDTO> getActivitiesByUser(Long userId);
-    void saveActivity(ActivityDTO activity);
-    void updateActivity(ActivityDTO activity);
+    ActivityDTO createActivity(ActivityDTO activity);
+    ActivityDTO updateActivity(ActivityDTO activity);
     void deleteActivity(Long id);
 }

@@ -53,20 +53,25 @@ public class DietServiceImpl implements DietService {
 
     @Override
     @Transactional
-    public void saveDiet(DietDTO dietDTO) {
-        Diet diet = new Diet();
-        copyDtoToEntity(dietDTO, diet);
-        dietRepository.save(diet);
+    public DietDTO createDiet(DietDTO dto) {
+        if (dto.getId() != null && dietRepository.existsById(dto.getId())) {
+            throw new IllegalArgumentException("This Diet ID already exists!");
+        }
+        Diet entity = new Diet();
+        copyDtoToEntity(dto, entity);
+        entity = dietRepository.save(entity);
+        return new DietDTO(entity);
     }
 
     @Override
     @Transactional
-    public void updateDiet(DietDTO dietDTO) {
-        Optional<Diet> optionalDiet = dietRepository.findById(dietDTO.getId());
+    public DietDTO updateDiet(DietDTO dto) {
+        Optional<Diet> optionalDiet = dietRepository.findById(dto.getId());
         if (optionalDiet.isPresent()) {
-            Diet diet = optionalDiet.get();
-            copyDtoToEntity(dietDTO, diet);
-            dietRepository.save(diet);
+            Diet entity = optionalDiet.get();
+            copyDtoToEntity(dto, entity);
+            entity = dietRepository.save(entity);
+            return new DietDTO(entity);
         } else {
             throw new NoSuchElementException("Diet not found");
         }

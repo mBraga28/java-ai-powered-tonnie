@@ -1,29 +1,21 @@
-package me.dio.domain.model;
+package me.dio.dto;
+
+import me.dio.domain.model.User;
 
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+public class UserDTO {
 
-@Entity
-@Table(name = "tb_user")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Date birthDate;
-    private Integer height;
-    private Integer weight;
+    private int height;
+    private int weight;
     private String goal;
 
-    public User() {}
+    public UserDTO(User entity) {}
 
-    public User(Long id, String name, Date birthDate, Integer height, Integer weight, String goal) {
+    public UserDTO(Long id, String name, Date birthDate, int height, int weight, String goal) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
@@ -56,7 +48,7 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public Integer getHeight() {
+    public int getHeight() {
         return height;
     }
 
@@ -64,7 +56,7 @@ public class User {
         this.height = height;
     }
 
-    public Integer getWeight() {
+    public int getWeight() {
         return weight;
     }
 
@@ -80,4 +72,3 @@ public class User {
         this.goal = goal;
     }
 }
-
